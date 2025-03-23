@@ -1,25 +1,16 @@
 === Post Title Required ===
-Contributors: younginnovations
-Tags: Title, Required, Charcter Limit
-Author: YIPL-santoshtmp
-Requires WP: 6.5
-Requires at least: 6.5
-Tested up to: 6.6.1
-Requires PHP: 7.0
-Domain Path: languages
-Text Domain: post-title-required
-Stable tag: 1.0.0
-Version: 1.0.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-To make title require field and limit its character.
+Contributors: santoshtmp7, younginnovations
+Tested up to:      6.7
+Stable tag:        1.0.0
+License:           GPLv2 or later
+License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+Tags: Title, Required, Charcter Limit
+
+This plugin make post title require field and limit its character.
 
 == Description ==
 Post Title Required plugin purpose to make title require field and limit its character.
-
-== Screenshots ==
-1. post-title-required-setting-page.png 
 
 == Installation ==
 1. Upload the plugin files to the `/wp-content/plugins/post-title-required` directory, or install the plugin through the WordPress plugins screen directly.
@@ -42,4 +33,4 @@ Yes, we can apply to only selected post type.
 Initial release.
 
 == License ==
-This plugin is licensed under the GPLv2 or later. For more information, see http://www.gnu.org/licenses/gpl-2.0.html.
+This plugin is licensed under the GPLv2 or later. For more information, see https://www.gnu.org/licenses/gpl-2.0.html.
