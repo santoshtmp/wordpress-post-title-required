@@ -72,6 +72,15 @@ function ptreq_check_title_length_setting($post_id, $post, $update) {
                 'Title Too long',
                 ['back_link' => true]
             );
+        } else if (!$title_length) {
+            wp_die(
+                sprintf(
+                    'The title is required, with maximum %d characters long. ',
+                    esc_attr($character_limit)
+                ),
+                'Title is empty',
+                ['back_link' => true]
+            );
         }
     }
 }
