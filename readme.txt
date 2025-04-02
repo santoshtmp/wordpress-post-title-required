@@ -22,7 +22,9 @@ Post Title Required plugin purpose to make title require field and limit its cha
 Yes, we can apply to only selected post type.
 
 == Screenshots ==
-1. post-title-required-setting-page.png
+1. Backend settings
+2. Quick Edit option
+3. Maximum character limit 
 
 == Release ==
 1. Initial release 1.0.0

@@ -43,45 +43,48 @@ add_action('admin_enqueue_scripts', 'ptreq_enqueue_script');
  * Enforce the title character limit when saving posts
  * ===================================================
  */
-function ptreq_check_title_length_setting($post_id, $post, $update) {
-    // Don't run during autosave or for non-public post types
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-    if (wp_is_post_revision($post_id)) return;
-    // 
-    $character_limit = get_option('ptreq_character_limit', 100);
-    $selected_post_types = get_option('ptreq_post_types', []);
+function ptreq_check_title_length_setting($data, $postarr, $unsanitized_postarr) {
+    try {
 
-    // If no post type is selected, apply to all public post types
-    if (empty($selected_post_types)) {
-        $selected_post_types = array_keys(get_post_types(['public' => true]));
-    }
-
-    // Check if the current post type is one of the selected types
-    if (in_array($post->post_type, $selected_post_types)) {
-        $title_length = mb_strlen($post->post_title);
-
-        // If the title is shorter than the required limit, prevent saving and show an error
-        if ($title_length > $character_limit) {
-            remove_action('save_post', 'ptreq_check_title_length_setting', 10);
-            // Display error message
-            wp_die(
-                sprintf(
-                    'The title is too long! It must be at maximum %d characters long. Please correct it.',
-                    esc_attr($character_limit)
-                ),
-                'Title Too long',
-                ['back_link' => true]
-            );
-        } else if (!$title_length) {
-            wp_die(
-                sprintf(
-                    'The title is required, with maximum %d characters long. ',
-                    esc_attr($character_limit)
-                ),
-                'Title is empty',
-                ['back_link' => true]
-            );
+        // Skip autosaves, revisions, and deletions
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return $data;
+        if (wp_is_post_revision($postarr['ID'])) return $data;
+        if ($data['post_status'] == 'trash' || $data['post_status'] == 'draft') {
+            return $data;
         }
+
+        // 
+        $post_type = $data['post_type'];
+        $character_limit = (int)get_option('ptreq_character_limit', 100);
+        $selected_post_types = get_option('ptreq_post_types', []);
+
+        // If no post type is selected, apply to all public post types
+        if (empty($selected_post_types)) {
+            $selected_post_types = array_keys(get_post_types(['public' => true]));
+        }
+
+        // Check if the current post type is one of the selected types
+        if (in_array($post_type, $selected_post_types)) {
+            $title_length = (int)mb_strlen(trim($data['post_title']));
+
+            // If the title is shorter than the required limit, prevent saving and show an error
+            if ($title_length > $character_limit) {
+                // Display error message
+                wp_die(
+                    sprintf(
+                        'The title is too long! It must be at maximum %d characters long. Please correct it.',
+                        esc_attr($character_limit)
+                    ),
+                    'Title Too long'
+                );
+            }
+            if (!$title_length) {
+                wp_die(__('Title is required.'));
+            }
+        }
+        return $data;
+    } catch (\Throwable $th) {
+        error_log($th->getMessage());
     }
 }
-add_action('save_post', 'ptreq_check_title_length_setting', 10, 3);
+add_action('wp_insert_post_data', 'ptreq_check_title_length_setting', 10, 3);
