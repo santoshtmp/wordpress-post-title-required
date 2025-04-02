@@ -21,6 +21,9 @@ Post Title Required plugin purpose to make title require field and limit its cha
 = Can we apply to particular post type? =
 Yes, we can apply to only selected post type.
 
+== Screenshots ==
+1. post-title-required-setting-page.png
+
 == Release ==
 1. Initial release 1.0.0
 
