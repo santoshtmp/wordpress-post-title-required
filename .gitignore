@@ -1,0 +1,36 @@
+*.log
+
+#Backup files
+/*.zip
+/*.tar.gz
+
+# Node Modules
+node_modules
+
+.htaccess_backup_*
+/.htaccess
+/license.txt
+/readme.html
+/sitemap.xml
+/sitemap.xml.gz
+
+.idea/
+
+# Ignore OSX files
+._.DS_Store
+.DS_Store
+.unison*
+
+# Nodejs log files
+wp-content/themes/logs
+*.log
+npm-debug.
+yarn-debug
+yarn-error
+lerna-debu
+
+
+# .htaccess
+.htaccess
+
+docker-compose.yaml
