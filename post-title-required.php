@@ -6,7 +6,7 @@
  * Description: Post Title Required plugin purpose to make title require field and limit its character.
  * Tags: Title, Required, Charcter Limit
  * Contributors: santoshtmp7, younginnovations
- * Requires at least: 6.3
+ * Requires at least: 6.8
  * Requires PHP: 7.4
  * Version: 1.0.0
  * Author: santoshtmp7

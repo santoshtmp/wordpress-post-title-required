@@ -1,11 +1,11 @@
 === Post Title Required ===
 
 Contributors: santoshtmp7, younginnovations
-Tested up to:      6.7
+Tested up to:      6.8
 Stable tag:        1.0.0
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
-Tags: Title, Required, Charcter Limit
+Tags: Title, Required, Post, Limit
 
 This plugin make post title require field and limit its character.
 
