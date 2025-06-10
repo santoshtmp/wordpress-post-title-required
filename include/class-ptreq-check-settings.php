@@ -97,19 +97,20 @@ if (! class_exists('PTREQ_CHECK_SETTINGS')) {
                         // Display error message
                         wp_die(
                             sprintf(
-                                'The title is too long! It must be at maximum %d characters long. Please correct it.',
+                                esc_html('The title is too long! It must be at maximum %d characters long. Please correct it.'),
                                 esc_attr($character_limit)
                             ),
-                            'Title Too long'
+                            esc_html('Title Too Long')
                         );
                     }
                     if (!$title_length) {
-                        wp_die(__('Title is required.'));
+                        wp_die(esc_html('Title is required.'));
                     }
                 }
                 return $data;
             } catch (\Throwable $th) {
-                error_log($th->getMessage());
+                // error_log($th->getMessage());
+                wp_die(esc_html('something went wrong in post title required.'));
             }
         }
 
