@@ -4,7 +4,7 @@
  * Plugin Name: Post Title Required
  * Plugin URI: https://github.com/santoshtmp/post-title-required
  * Description: Post Title Required plugin purpose to make title require field and limit its character.
- * Tags: Title, Required, Charcter Limit
+ * Tags: Title, Required, Charcter Limit, Post Title Required
  * Contributors: santoshtmp7, younginnovations
  * Requires at least: 6.3
  * Requires PHP: 7.4
