@@ -1,9 +1,12 @@
 jQuery(function ($) {
     // Set your desired character limit
+    let characterLimit = 100;
     try {
-        var characterLimit = data_obj.ptreq_character_limit;
+        if (typeof ptreqAjax !== 'undefined' && ptreqAjax.ptreq_character_limit) {
+            characterLimit = ptreqAjax.ptreq_character_limit;
+        }
     } catch (error) {
-        var characterLimit = 100;
+        console.warn("ptreqAjax not found, using default limit:", characterLimit);
     }
 
     /**
@@ -16,70 +19,139 @@ jQuery(function ($) {
     }
 
     /**
-     * 
-     * @param {*} titleField 
+     * Bind validation to the post title input field.
+     *
+     * @param {jQuery} titleField - jQuery object for the post title input.
      */
     function ptreq_input_title_field(titleField) {
         titleField.prop('required', true);
+        ptreq_checkTitleOnWithoutEditorPost(titleField);
+
         titleField.on('input', function () {
-            var currentLength = titleField.val().length;
-            if (currentLength > characterLimit) {
-                var trimmedTitle = titleField.val().substring(0, characterLimit);// Trim the title to the character limit
-                titleField.val(trimmedTitle);
-                $('#title_limit_warning').remove();
-                $('#titlewrap').append(
-                    '<div id="title_limit_warning" class="notice notice-warning is-dismissible"><p>Title character limit is ' +
-                    characterLimit +
-                    '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>'
-                );
-                $('#title_limit_warning button').on('click', function () {
-                    $('#title_limit_warning').remove();
-                });
-            }
+            ptreq_checkTitleOnWithoutEditorPost(titleField);
+        });
+        $('#ptreq_title_limit_warning button').on('click', function () {
+            $('#ptreq_title_limit_warning').remove();
         });
     }
 
     /**
-     * quick edit field
+     * Quick Edit - Add validation when inline edit is opened.
      */
     $('.row-actions button.editinline').on('click', function () {
-        $('.requird-identify').remove();
-        $('.title-required .title').append('<span class="requird-identify" style="color: #f00;">*</span>');
-
         // check on click quick edit
-        var find_input_interva = setInterval(function () {
-            var titleField = $('.inline-edit-col input[name="post_title"]');
-            if (titleField.length) {
-                clearInterval(find_input_interva);
-                titleField.prop('required', true);
-                titleField.parent().parent().addClass('title-required');
+        const intervalId = setInterval(function () {
+            let inlineTitle = $('.inline-edit-col input[name="post_title"]');
+            if (inlineTitle.length) {
+                clearInterval(intervalId);
 
-                if (titleField.val().length === 0) {
-                    $('.submit button.save').prop('disabled', true);
-                }
+                inlineTitle.prop('required', true);
+
+                ptreq_checkTitleOnQuickEdit(inlineTitle);
+                // check on each title input
+                inlineTitle.on('input', function () {
+                    var new_inlineTitle = $('.inline-edit-col input[name="post_title"]');
+                    ptreq_checkTitleOnQuickEdit(new_inlineTitle);
+                });
             }
         }, 100);
-
-        // check on each title input
-        titleField.on('input', function () {
-            var new_titleField = $('.inline-edit-col input[name="post_title"]');
-            var currentLength = new_titleField.val().length;
-            if (currentLength === 0) {
-                $('.submit button.save').prop('disabled', true);
-                $('.wp-title-check-required').remove();
-                $('.title-required .input-text-wrap').append('<span class="wp-title-check-required" style="color: #f00;"> Title is required </span>');
-            } else if (currentLength > characterLimit) {
-                var trimmedTitle = new_titleField.val().substring(0, characterLimit);
-                new_titleField.val(trimmedTitle);
-                $('.submit button.save').prop('disabled', true);
-                $('.wp-title-check-required').remove();
-                $('.title-required .input-text-wrap').append('<span class="wp-title-check-required" style="color: #f00;"> Title character limit is ' + characterLimit + '</span>');
-            } else {
-                $('.submit button.save').prop('disabled', false);
-                $('.wp-title-check-required').remove();
-            }
-        });
     });
+
+    /**
+      * Validate title field on post editor screen.
+      *
+      * @param {jQuery} titleField - Post title input field.
+      */
+    async function ptreq_checkTitleOnWithoutEditorPost(titleField) {
+        const currentLength = await getVisibleTextLengthWithIgnore(titleField.val());
+        const publishBtn = $('#publishing-action #publish');
+        const warningBox = $('#ptreq_title_limit_warning');
+
+        warningBox.remove();
+
+        if (!currentLength) {
+            publishBtn.prop('disabled', true);
+            $('#titlewrap').append(ptreq_getWarningHtml('Title is required.'));
+        } else if (currentLength > characterLimit) {
+            publishBtn.prop('disabled', true);
+            $('#titlewrap').append(ptreq_getWarningHtml('Title character limit is ' + characterLimit));
+        } else {
+            publishBtn.prop('disabled', false);
+        }
+    }
+
+    /**
+    * Validate title field in Quick Edit mode.
+    *
+    * @param {jQuery} titleField - Quick Edit title input field.
+    */
+    async function ptreq_checkTitleOnQuickEdit(titleField) {
+        const currentLength = await getVisibleTextLengthWithIgnore(titleField.val());
+        const saveBtn = $('.submit button.save');
+        const wrapper = titleField.closest('.input-text-wrap');
+
+        $('.ptreq-title-check-required').remove();
+
+
+        if (!currentLength) {
+            saveBtn.prop('disabled', true);
+            wrapper.append('<span class="ptreq-title-check-required" style="color: #f00;"> Title is required </span>');
+
+        } else if (currentLength > characterLimit) {
+            saveBtn.prop('disabled', true);
+            wrapper.append('<span class="ptreq-title-check-required" style="color: #f00;"> Title character limit is ' + characterLimit + '</span>');
+        } else {
+            saveBtn.prop('disabled', false);
+        }
+    }
+
+    /**
+    * Make an AJAX call to get visible title length after ignoring invisible chars.
+    *
+    * @param {string} title - Title string.
+    * @returns {Promise<number>} The visible length of the title.
+    */
+    async function getVisibleTextLengthWithIgnore(title) {
+        try {
+            let response = await $.ajax({
+                url: ptreqAjax.ajax_url,
+                type: "POST",
+                data: {
+                    action: ptreqAjax.action_name,
+                    _nonce: ptreqAjax.nonce,
+                    ptrq_title: title
+                },
+            });
+            console.log(response);
+            response = JSON.parse(response);
+            if (response.status) {
+                return response.length;
+            } else {
+                console.error("Failed to get visible length");
+                return 0;
+            }
+        } catch (error) {
+            console.error("AJAX Error:", error.responseText || error);
+            return 0;
+        }
+    }
+
+    /**
+    * Generate warning HTML.
+    *
+    * @param {string} message - Warning message.
+    * @returns {string} HTML for warning box.
+    */
+    function ptreq_getWarningHtml(message) {
+        return `
+            <div id="ptreq_title_limit_warning" class="notice notice-warning is-dismissible">
+                <p>${message}</p>
+                <button type="button" class="notice-dismiss">
+                    <span class="screen-reader-text">Dismiss this notice.</span>
+                </button>
+            </div>`;
+    }
+
 
     /**
      * END
