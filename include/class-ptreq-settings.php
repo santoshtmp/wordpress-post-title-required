@@ -211,7 +211,7 @@ if (! class_exists('PTREQ_SETTINGS')) {
                                             id="ptreq_ignore_chars_<?php echo esc_attr($entity); ?>"
                                             value="<?php echo esc_attr($entity); ?>"
                                             <?php checked(in_array($entity, $ignore_chars_options, true)); ?>>
-                                        <?php echo esc_attr($label); ?>
+                                        <?php echo ($label);?>
                                     </label>
                                 </li>
                             <?php endforeach; ?>

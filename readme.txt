@@ -1,7 +1,7 @@
 === Post Title Required ===
 
 Contributors: santoshtmp7, younginnovations
-Tested up to: 6.8.2
+Tested up to: 6.8
 Stable tag: 1.1.1
 Requires PHP: 8.0
 License: GPLv2 or later

@@ -81,12 +81,12 @@ if (! class_exists('PTREQ_CHECK_SETTINGS')) {
                 'u00AD' => [
                     'htmlname' => '&shy;',
                     'htmlnum'  => '&#173;',
-                    'label'    => 'Soft Hyphen [&amp;shy;] [&amp#173;]',
+                    'label'    => 'Soft Hyphen [&amp;shy;] [&amp;#173;]',
                 ],
                 'u00A0' => [
                     'htmlname' => '&nbsp;',
                     'htmlnum'  => '&#160;',
-                    'label'    => 'Non-breaking Space [&amp;nbsp;] [&amp#160;]',
+                    'label'    => 'Non-breaking Space [&amp;nbsp;] [&amp;#160;]',
                 ],
                 'u200B' => [
                     'htmlname' => '&ZeroWidthSpace;',
@@ -104,7 +104,7 @@ if (! class_exists('PTREQ_CHECK_SETTINGS')) {
                     'label'    => 'Right-to-Left Mark [&amp;rlm;] [&amp;#8207;]',
                 ],
                 'u202F' => [
-                    'htmlname' => '&nbsp;',
+                    'htmlname' => '&#8239;',
                     'htmlnum'  => '&#8239;',
                     'label'    => 'Narrow No-Break Space [&amp;#8239;]',
                 ],
