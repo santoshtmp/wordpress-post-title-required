@@ -8,7 +8,7 @@
  * Contributors: santoshtmp7, younginnovations
  * Requires at least: 6.3
  * Requires PHP: 8.0
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author: santoshtmp7
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html

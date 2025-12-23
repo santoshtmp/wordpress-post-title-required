@@ -1,8 +1,8 @@
 === Post Title Required ===
 
 Contributors: santoshtmp7, younginnovations
-Tested up to: 6.8
-Stable tag: 1.1.1
+Tested up to: 6.9
+Stable tag: 1.1.2
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -31,6 +31,9 @@ Yes, we can apply to only selected post type.
 1. Initial release 1.0.0
 
 == Changelog ==
+= 1.1.2 =
+* Compatible with WordPress 6.9.
+
 = 1.1.1 =
 * Compatible with WordPress 6.8.2.
 * Added option to ignore invisible title characters (e.g., soft hyphens, zero-width spaces).
