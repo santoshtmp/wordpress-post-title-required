@@ -197,6 +197,7 @@ if (! class_exists('PTREQ_CHECK_SETTINGS')) {
                 // 
                 $post_type = $data['post_type'];
                 $character_limit = (int)get_option('ptreq_character_limit', 100);
+                $character_limit = (!$character_limit || $character_limit <= 0) ? 100 : $character_limit;
                 $selected_post_types = self::get_allowed_post_types();
 
                 // Check if the current post type is one of the selected types

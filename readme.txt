@@ -2,7 +2,7 @@
 
 Contributors: santoshtmp7, younginnovations
 Tested up to: 6.9
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -31,6 +31,9 @@ Yes, we can apply to only selected post type.
 1. Initial release 1.0.0
 
 == Changelog ==
+= 1.1.3 =
+* Fix issue of character limit.
+
 = 1.1.2 =
 * Compatible with WordPress 6.9.
 
